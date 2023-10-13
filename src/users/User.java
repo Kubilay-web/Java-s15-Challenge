@@ -1,7 +1,6 @@
 package users;
 
 import library.Book;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +8,6 @@ public class User {
     private String userId;
     private String name;
     private int borrowedBookCount;
-
-
     private List<Book> borrowedBooks;
 
     public User(String userId, String name) {
@@ -54,14 +51,19 @@ public class User {
 
     public void borrowBook(Book book) {
         if (borrowedBookCount < 5) {
-            borrowedBooks.add(book);
-            borrowedBookCount++;
-            book.setAvailable(false);
-            System.out.println(name + " borrowed the book: " + book.getTitle());
+            if (book.isAvailable()) {
+                borrowedBooks.add(book);
+                borrowedBookCount++;
+                book.setAvailable(false);
+                System.out.println(name + " borrowed the book: " + book.getTitle());
+            } else {
+                System.out.println("Sorry, the book is already borrowed by someone else.");
+            }
         } else {
             System.out.println("Sorry, you have reached the maximum borrowing limit.");
         }
     }
+
 
     public void returnBook(Book book) {
         if (borrowedBooks.contains(book)) {
@@ -72,5 +74,9 @@ public class User {
         } else {
             System.out.println("You cannot return a book you didn't borrow.");
         }
+    }
+
+    public boolean canBorrowMoreBooks() {
+        return borrowedBooks.size() < 5;
     }
 }

@@ -1,8 +1,7 @@
 package library;
-
+import categories.Category;
 import invoices.Invoice;
 import users.User;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +12,7 @@ public class Library {
     private List<Book> books;
     private Set<User> users;
     private Map<String, User> borrowedBooks;
+    private List<Category> categories = new ArrayList<>();
 
     public Library(List<Book> books, Set<User> users) {
         this.books = books;
@@ -20,7 +20,6 @@ public class Library {
         this.borrowedBooks = new HashMap<>();
     }
 
-    // Diğer kütüphane özellikleri
 
     public void addBook(Book book) {
         books.add(book);
@@ -82,19 +81,48 @@ public class Library {
             book.setAvailable(true);
             user.returnBook(book);
             borrowedBooks.remove(book.getId());
-            // Ücret iadesi yapılabilir (gerektiğinde)
         } else {
             System.out.println("Kitap iade edilemedi.");
         }
     }
 
     private double calculateBorrowFee(Book book) {
-        // Ödünç alma ücreti hesaplama mantığını burada uygulayabilirsiniz (örnek)
-        return 5.0; // Ödünç alma ücreti (örnek)
+        return 5.0;
     }
-
 
     public User[] getUsers() {
         return users.toArray(new User[0]);
+    }
+
+    public List<Book> getBooksByAuthor(String authorName) {
+        List<Book> booksByAuthor = new ArrayList<>();
+        for (Book book : this.books) {
+            if (book.getAuthor().equals(authorName)) {
+                booksByAuthor.add(book);
+            }
+        }
+        return booksByAuthor;
+    }
+
+    public Category[] getCategories() {
+        return categories.toArray(new Category[0]);
+    }
+
+    public void addCategory(Category category) {
+        categories.add(category);
+    }
+
+    public void removeCategory(Category category) {
+        categories.remove(category);
+    }
+
+    public List<Book> getBooksInCategory(String categoryName) {
+        List<Book> booksInCategory = new ArrayList<>();
+        for (Book book : books) {
+            if (book.getCategory().equals(categoryName)) {
+                booksInCategory.add(book);
+            }
+        }
+        return booksInCategory;
     }
 }
